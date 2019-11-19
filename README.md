@@ -10,16 +10,19 @@ This script for score level of password:
 # Quick start
 
 The script requires installed Python 3.5 or higher
+The script requires file with black list,download it to the folder of script(link below) 
+[link to github](https://github.com/danielmiessler/SecLists/blob/master/Passwords/Most-Popular-Letter-Passes.txt)
 
 ```bash
-$ python password_strength.py  -f <path to file> -p <password for score>
+$ python password_strength.py
+password: <enter your password>
 ```
 
 # The sample of result script
 We receive common score of password
 
 ```bash
-score of password:  10.0
+score of password: <your password> : 10.0
 ```
 
 # Project Goals
