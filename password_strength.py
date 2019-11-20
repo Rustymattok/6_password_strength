@@ -36,11 +36,11 @@ def get_score_black_list(black_list, password):
 
 def get_password_strength(black_list, password):
     common_score = sum(
-        [get_score_regular(PATTERN_UP_LETTER, password) * 2.5,
-         get_score_regular(PATTERN_NUMERIC, password) * 2.5,
-         get_score_regular(PATTERN_SYMBOLS, password) * 2.5,
-         get_score_black_list(black_list, password) * 2.5]
-    )
+        [get_score_regular(PATTERN_UP_LETTER, password),
+         get_score_regular(PATTERN_NUMERIC, password),
+         get_score_regular(PATTERN_SYMBOLS, password),
+         get_score_black_list(black_list, password)]
+    ) * 2.5
     return common_score
 
 
