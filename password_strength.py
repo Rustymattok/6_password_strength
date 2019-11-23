@@ -5,6 +5,7 @@ import getpass
 
 
 PATTERN_UP_LETTER = '[A-Z]+'
+PATTERN_LOW_LETTER = '[a-z]+'
 PATTERN_NUMERIC = '[0-9]'
 PATTERN_SYMBOLS = r'\W'
 
@@ -21,25 +22,29 @@ def load_data(file_path):
     if not os.path.exists(file_path):
         return None
     with open(file_path, 'r') as file_handler:
-        data_list = file_handler.read().split('\n')
-    return data_list
+        words_list = file_handler.read().split('\n')
+    return words_list
 
 
-def get_score_black_list(black_list, password):
+def get_score_blacklist(blacklist, password):
     password = password.lower()
-    for word in black_list:
-        if word.lower() in password:
-            return False
-        else:
-            return True
+    try:
+        for word in blacklist:
+            if word.lower() in password:
+                return False
+        return True
+    except TypeError:
+        print("Error not correct file")
+        return False
 
 
-def get_password_strength(black_list, password):
+def get_password_strength(blacklist, password):
     common_score = sum(
         [get_score_regular(PATTERN_UP_LETTER, password),
          get_score_regular(PATTERN_NUMERIC, password),
          get_score_regular(PATTERN_SYMBOLS, password),
-         get_score_black_list(black_list, password)]
+         get_score_regular(PATTERN_LOW_LETTER, password),
+         get_score_blacklist(blacklist, password)]
     ) * 2.5
     return common_score
 
@@ -58,16 +63,11 @@ def create_parser():
 def main():
     parser = create_parser()
     args = parser.parse_args()
-    try:
-        black_list = load_data(args.file)
-        password = getpass.getpass()
-        print('score password: ' +
-              password +
-              ' : ' +
-              str(get_password_strength(black_list, password))
-              )
-    except ValueError:
-        print('not correct format')
+    blacklist = load_data(args.file)
+    password = getpass.getpass()
+    print('score password: ' +
+          str(get_password_strength(blacklist, password))
+          )
 
 
 if __name__ == '__main__':
