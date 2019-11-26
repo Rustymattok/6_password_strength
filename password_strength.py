@@ -10,7 +10,7 @@ PATTERN_NUMERIC = '[0-9]'
 PATTERN_SYMBOLS = r'\W'
 
 
-def get_score_regular(regular_exp, password):
+def is_password_good_of_regular(regular_exp, password):
     size_coincidences = len(re.findall(regular_exp, password))
     if 0 < size_coincidences < len(password):
         return True
@@ -26,25 +26,22 @@ def load_data(file_path):
     return words_list
 
 
-def get_score_blacklist(blacklist, password):
-    password = password.lower()
-    try:
-        for word in blacklist:
-            if word.lower() in password:
-                return False
-        return True
-    except TypeError:
-        print("Error not correct file")
-        return False
+def is_password_in_blacklist(blacklist, password):
+    for word in blacklist:
+        if word in password:
+            return False
+    return True
 
 
 def get_password_strength(blacklist, password):
+    if blacklist is None:
+        return
     common_score = sum(
-        [get_score_regular(PATTERN_UP_LETTER, password),
-         get_score_regular(PATTERN_NUMERIC, password),
-         get_score_regular(PATTERN_SYMBOLS, password),
-         get_score_regular(PATTERN_LOW_LETTER, password),
-         get_score_blacklist(blacklist, password)]
+        [is_password_good_of_regular(PATTERN_UP_LETTER, password),
+         is_password_good_of_regular(PATTERN_NUMERIC, password),
+         is_password_good_of_regular(PATTERN_SYMBOLS, password),
+         is_password_good_of_regular(PATTERN_LOW_LETTER, password),
+         is_password_in_blacklist(blacklist, password)]
     ) * 2.5
     return common_score
 
