@@ -12,10 +12,7 @@ PATTERN_SYMBOLS = r'\W'
 
 def is_password_good_of_regular(regular_exp, password):
     size_coincidences = len(re.findall(regular_exp, password))
-    if 0 < size_coincidences < len(password):
-        return True
-    else:
-        return False
+    return bool(size_coincidences)
 
 
 def load_data(file_path):
@@ -62,9 +59,9 @@ def main():
     args = parser.parse_args()
     blacklist = load_data(args.file)
     password = getpass.getpass()
-    print('score password: ' +
-          str(get_password_strength(blacklist, password))
-          )
+    print('score password: {}'.format(
+        get_password_strength(blacklist, password)
+    ))
 
 
 if __name__ == '__main__':
