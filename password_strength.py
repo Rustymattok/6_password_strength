@@ -24,10 +24,7 @@ def load_data(file_path):
 
 
 def is_password_in_blacklist(blacklist, password):
-    for word in blacklist:
-        if word in password:
-            return False
-    return True
+    return password in blacklist
 
 
 def get_password_strength(blacklist, password):
